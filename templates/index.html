@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signature Type Form</title>
+</head>
+<body>
+    <h1>Изберете тип заверка</h1>
+    <form action="/updateSignatureType" method="POST">
+        <input type="radio" id="lab" name="signatureType" value="lab">
+        <label for="lab">Лабораторни упражнения</label><br>
+        <input type="radio" id="lec" name="signatureType" value="lec">
+        <label for="lec">Лекции</label><br>
+        <input type="radio" id="k_r" name="signatureType" value="k_r">
+        <label for="k_r">Курсова работа</label><br>
+        <input type="radio" id="k_pr" name="signatureType" value="k_pr">
+        <label for="k_pr">Курсов проект</label><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
