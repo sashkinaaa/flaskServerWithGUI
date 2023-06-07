@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from tkinter import Tk, messagebox, Button
+from tkinter import Tk, messagebox, Button, Label
 import threading
 import requests
 import os
@@ -41,13 +41,11 @@ def stop_server():
     global own_pid
     server_should_stop = True
     os.kill(own_pid, 9)
-    return 'Server stop request received'
+    return 'Server stopped'
 
 
 def start_server():
     global server_started
-    global server_should_stop
-
     server_started = True
     app.run(host="0.0.0.0", port=80, threaded=True)
 
@@ -60,14 +58,10 @@ def check_server_started():
         root.after(100, check_server_started)
 
 
-def stop_button_click():
+def on_stopping():
     response = requests.post('http://localhost/stopServer')
     if response.status_code == 200:
         messagebox.showinfo('Server Stopped', 'The server has been stopped.')
-
-
-def on_closing():
-    requests.post('http://localhost/stopServer')
     root.destroy()
 
 
@@ -79,8 +73,15 @@ if __name__ == '__main__':
     threading.Thread(target=start_server).start()
     root.after(100, check_server_started)
 
-    stop_button = Button(root, text="Stop Server", command=stop_button_click)
+    serverLabel = Label(root, text="The server has started. You can update Signature Type by opening http://IPaddr"
+                                   "in a browser. \n Then you can use http://IPaddr/returnList to get a response")
+    serverLabel.pack()
+    stop_button = Button(root, text="Stop Server", command=on_stopping)
     stop_button.pack()
 
-    root.protocol("WM_DELETE_WINDOW", on_closing)
+    infoLabel = Label(root, text="Note that the file with students should be in the same directory as your "
+                                 "script/exe and should be named studentsList.csv", fg='red')
+    infoLabel.pack()
+
+    root.protocol("WM_DELETE_WINDOW", on_stopping)
     root.mainloop()
